@@ -4,8 +4,12 @@
 This Spigot plugin, for use with the latest Minecraft version, automatically sends notifications to a push service (ntfy.sh), when players join or leave the server, as well as when the server starts up or shuts down. It helps server administrators and players stay informed about server activities in real-time.
 
 
+## Ideas
+If you have ideas for more events, open an issue.
+
 ## Java Version
 Compatible with Minecraft 1.20.6 and requires Java 21.
+
 
 ## Features
 - Sends push notifications when a player joins or leaves the server.
