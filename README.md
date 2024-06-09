@@ -1,7 +1,8 @@
 # SimplePushEvents Plugin
 
 ## Description
-This Spigot plugin, for use with the latest Minecraft version, automatically sends notifications to a push service (ntfy.sh), when players join or leave the server, as well as when the server starts up or shuts down. It helps server administrators and players stay informed about server activities in real-time.
+This Spigot plugin, for use with the latest Minecraft version, automatically sends notifications to a push service (ntfy.sh), when players join, leave, execute specific commands or the server starts/shuts down.
+It helps server you and your players to stay informed about server activities in real-time.
 
 
 ## Ideas
@@ -17,6 +18,14 @@ Compatible with Minecraft 1.20.6 and requires Java 21.
 - Configurable message content and status for each event.
 - Easy integration with the ntfy.sh push service.
 - Quick setup with minimal configuration required.
+- Checks and notifies for specific player commands:
+  - `op`
+  - `deop`
+  - `ban`
+  - `banip`
+  - `pardon`
+  - `pardonip`
+  - `whitelist`
 
 
 ## Setup
@@ -42,24 +51,45 @@ Before deploying the plugin, ensure you configure the following parameters in th
 ```yaml
 donottouch:
   configexists: true
-  pushchannel: generated-unique-channel-id
-
+  pushchannel: 1c228642f083
 messages:
   general:
-    title: "Minecraft Server:"
+    title: 'Minecraft Server:'
     startup:
       status: true
-      content: "The server is online now!"
+      content: The server is online now!
     poweroff:
       status: true
-      content: "The server is shutting down!"
+      content: The server is shutting down!
   player:
+    command:
+      op:
+        status: true
+        content: The player %PLAYER% executed /op for %TARGET% !
+      deop:
+        status: true
+        content: The player %PLAYER% executed /deop for %TARGET% !
+      ban:
+        status: true
+        content: The player %PLAYER% executed /ban for %TARGET% !
+      banip:
+        status: true
+        content: The player %PLAYER% executed /ban-ip for %TARGET% !
+      pardon:
+        status: true
+        content: The player %PLAYER% executed /pardon for %TARGET% !
+      pardonip:
+        status: true
+        content: The player %PLAYER% executed /pardon-ip for %TARGET% !
+      whitelist:
+        status: true
+        content: 'The player %PLAYER% used a whitelist command: %CONTENT%'
     join:
       status: true
-      content: "The player %PLAYER% joined!"
+      content: The player %PLAYER% joined!
     leave:
       status: true
-      content: "The player %PLAYER% left!"
+      content: The player %PLAYER% left!
 ```
 
 
