@@ -17,11 +17,11 @@ public class Start extends JavaPlugin {
 	public void onEnable() {
 		config = new Config("plugins/simplepushevents", "options.yml", this);
 		if (!config.check("configexists")) {
-			String serverUuid = (UUID.randomUUID() + Bukkit.getServer().getIp()).trim();
-			System.out.println(serverUuid);
+
+			String uuid = CreateShortUuid();
 
 			config.set("donottouch.configexists", true);
-			config.set("donottouch.pushchannel", serverUuid);
+			config.set("donottouch.pushchannel", uuid);
 
 			config.set("messages.general.title", "Minecraft Server:");
 
@@ -33,6 +33,26 @@ public class Start extends JavaPlugin {
 
 			config.set("messages.player.command.op.status", true);
 			config.set("messages.player.command.op.content", "The player %PLAYER% executed /op for %TARGET% !");
+
+			config.set("messages.player.command.deop.status", true);
+			config.set("messages.player.command.deop.content", "The player %PLAYER% executed /deop for %TARGET% !");
+
+			config.set("messages.player.command.ban.status", true);
+			config.set("messages.player.command.ban.content", "The player %PLAYER% executed /ban for %TARGET% !");
+
+			config.set("messages.player.command.banip.status", true);
+			config.set("messages.player.command.banip.content", "The player %PLAYER% executed /ban-ip for %TARGET% !");
+
+			config.set("messages.player.command.pardon.status", true);
+			config.set("messages.player.command.pardon.content", "The player %PLAYER% executed /pardon for %TARGET% !");
+
+			config.set("messages.player.command.pardonip.status", true);
+			config.set("messages.player.command.pardonip.content",
+					"The player %PLAYER% executed /pardon-ip for %TARGET% !");
+
+			config.set("messages.player.command.whitelist.status", true);
+			config.set("messages.player.command.whitelist.content",
+					"The player %PLAYER% used a whitelist command: %CONTENT%");
 
 			config.set("messages.player.join.status", true);
 			config.set("messages.player.join.content", "The player %PLAYER% joined!");
@@ -55,6 +75,13 @@ public class Start extends JavaPlugin {
 			pushManager.SendMessage(configMessage);
 		}
 
+	}
+
+	String CreateShortUuid() {
+		String base = (UUID.randomUUID() + Bukkit.getServer().getIp()).trim();
+		base = base.replace("-", "").substring(6, base.length() / 2);
+
+		return base;
 	}
 
 	@Override

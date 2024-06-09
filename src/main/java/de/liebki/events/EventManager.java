@@ -1,5 +1,9 @@
 package de.liebki.events;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -19,19 +23,55 @@ public class EventManager implements Listener {
 		this.pushManager = pushManager;
 	}
 
+	private static final Map<String, String> commandMap = new HashMap<>();
+
+	static {
+		commandMap.put("/op", "messages.player.command.op");
+		commandMap.put("/deop", "messages.player.command.deop");
+		commandMap.put("/ban", "messages.player.command.ban");
+		commandMap.put("/ban-ip", "messages.player.command.banip");
+		commandMap.put("/pardon", "messages.player.command.pardon");
+		commandMap.put("/pardon-ip", "messages.player.command.pardonip");
+		commandMap.put("/whitelist", "messages.player.command.whitelist");
+	}
+
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
-		boolean IsActive = (boolean) plugin.config.get("messages.player.command.op.status");
+		String commandText = e.getMessage();
+		Player player = e.getPlayer();
 
-		if (IsActive && e.getPlayer().isOp() && e.getMessage().startsWith("/op")) {
-			String configMessage = (String) plugin.config.get("messages.player.command.op.content");
-			configMessage = configMessage.replace("%PLAYER%", e.getPlayer().getName()).replace("%TARGET%",
-					e.getMessage().replace("/op ", ""));
+		if (player.isOp()) {
+			String playerName = player.getName();
+			String messageToPushSend = "";
 
-			pushManager.SendMessage(configMessage);
+			for (Map.Entry<String, String> entry : commandMap.entrySet()) {
+				if (commandText.startsWith(entry.getKey())) {
+					boolean isActive = (boolean) plugin.config.get(entry.getValue() + ".status");
 
+					if (isActive) {
+						if (entry.getKey().equals("/whitelist")) {
+							messageToPushSend = (String) plugin.config.get(entry.getValue() + ".content");
+							messageToPushSend = messageToPushSend.replace("%CONTENT%", commandText).replace("%PLAYER%",
+									playerName);
+						} else {
+							String[] parts = commandText.split(" ");
+							if (parts.length > 1) {
+								String targetPlayer = parts[1];
+								messageToPushSend = (String) plugin.config.get(entry.getValue() + ".content");
+
+								messageToPushSend = messageToPushSend.replace("%PLAYER%", playerName)
+										.replace("%TARGET%", targetPlayer);
+							}
+						}
+					}
+					break;
+				}
+			}
+
+			if (!messageToPushSend.isEmpty()) {
+				pushManager.SendMessage(messageToPushSend);
+			}
 		}
-
 	}
 
 	@EventHandler
