@@ -16,7 +16,7 @@ public class Start extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		config = new Config("plugins/simplepushevents", "options.yml", this);
-		if (!config.check("configexists")) {
+		if (!config.check("donottouch.configexists")) {
 
 			String uuid = CreateShortUuid();
 
@@ -30,6 +30,9 @@ public class Start extends JavaPlugin {
 
 			config.set("messages.general.poweroff.status", true);
 			config.set("messages.general.poweroff.content", "The server is shutting down!");
+
+			config.set("messages.player.advancement.status", true);
+			config.set("messages.player.advancement.content", "The player %PLAYER% unlocked the advancement: %NAME%");
 
 			config.set("messages.player.command.op.status", true);
 			config.set("messages.player.command.op.content", "The player %PLAYER% executed /op for %TARGET% !");

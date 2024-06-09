@@ -51,7 +51,7 @@ Before deploying the plugin, ensure you configure the following parameters in th
 ```yaml
 donottouch:
   configexists: true
-  pushchannel: 1c228642f083
+  pushchannel: 1dea3f4db2bb
 messages:
   general:
     title: 'Minecraft Server:'
@@ -62,6 +62,9 @@ messages:
       status: true
       content: The server is shutting down!
   player:
+    advancement:
+      status: true
+      content: 'The player %PLAYER% unlocked the advancement: %NAME%'
     command:
       op:
         status: true
@@ -90,6 +93,7 @@ messages:
     leave:
       status: true
       content: The player %PLAYER% left!
+
 ```
 
 

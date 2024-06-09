@@ -3,9 +3,11 @@ package de.liebki.events;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -70,6 +72,28 @@ public class EventManager implements Listener {
 
 			if (!messageToPushSend.isEmpty()) {
 				pushManager.SendMessage(messageToPushSend);
+			}
+		}
+	}
+
+	@EventHandler
+	public void OnPlayerAdvancement(PlayerAdvancementDoneEvent event) {
+		boolean IsActive = (boolean) plugin.config.get("messages.player.advancement.status");
+
+		if (IsActive) {
+			try {
+				String playerName = event.getPlayer().getName();
+				Advancement AdvancementObj = event.getAdvancement();
+
+				String AdvancementName = AdvancementObj.getDisplay().getTitle();
+				String configMessage = (String) plugin.config.get("messages.player.advancement.content");
+
+				configMessage = configMessage.replace("%PLAYER%", playerName).replace("%NAME%", AdvancementName);
+				pushManager.SendMessage(configMessage);
+			} catch (Exception e) {
+				if (!e.getMessage().contains("Cannot invoke")) {
+					throw e;
+				}
 			}
 		}
 	}
