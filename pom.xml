@@ -4,8 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.liebki</groupId>
 	<artifactId>simplepushevents</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<name>simplepushevents</name>
+
+
+	<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+	</properties>
 
 
 	<!-- Example packaging -->
@@ -35,7 +41,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.6.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>

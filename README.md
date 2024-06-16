@@ -1,31 +1,37 @@
 # SimplePushEvents Plugin
 
 ## Description
-This Spigot plugin, for use with the latest Minecraft version, automatically sends notifications to a push service (ntfy.sh), when players join, leave, execute specific commands or the server starts/shuts down.
-It helps server you and your players to stay informed about server activities in real-time.
+This Spigot plugin, for use with the latest Minecraft version, automatically sends notifications to a push service (ntfy.sh), when players join, leave, execute specific commands, do certain things or the server starts/shuts down.
+This helps server owners and players stay informed about server activities in real-time.
 
 
 ## Ideas
 If you have ideas for more events, open an issue.
+
 
 ## Java Version
 Compatible with Minecraft 1.20.6 and requires Java 21.
 
 
 ## Features
-- Sends push notifications when a player joins or leaves the server.
 - Notifies when the server starts up or shuts down.
-- Configurable message content and status for each event.
+- Sends push notifications when
+    - a player joins or leaves the server.
+    - a player unlocks an advancement.
+    - a player creates a portal.
+    - a player dies (including the death message).
+    - executes `/spe [message content]` for custom notifications (with custom permissions).
+- Change the message format or disable/enable them entirely.
 - Easy integration with the ntfy.sh push service.
 - Quick setup with minimal configuration required.
 - Checks and notifies for specific player commands:
-  - `op`
-  - `deop`
-  - `ban`
-  - `banip`
-  - `pardon`
-  - `pardonip`
-  - `whitelist`
+    - `/op`
+    - `/deop`
+    - `/ban`
+    - `/banip`
+    - `/pardon`
+    - `/pardonip`
+    - `/whitelist`
 
 
 ## Setup
@@ -45,13 +51,12 @@ To set up the SimplePushEvents plugin, follow these steps:
 
 
 ## Plugin Configuration
-
 Before deploying the plugin, ensure you configure the following parameters in the `options.yml` file:
 
 ```yaml
 donottouch:
   configexists: true
-  pushchannel: 1dea3f4db2bb
+  pushchannel: 7fc647dd98
 messages:
   general:
     title: 'Minecraft Server:'
@@ -61,11 +66,31 @@ messages:
     poweroff:
       status: true
       content: The server is shutting down!
+    chatcommand:
+      status: true
+      content: '[%PLAYER%] wrote: %MESSAGE%'
+      permission: spe.usechatcommand
   player:
     advancement:
       status: true
       content: 'The player %PLAYER% unlocked the advancement: %NAME%'
+    join:
+      status: true
+      content: The player %PLAYER% joined!
+    leave:
+      status: true
+      content: The player %PLAYER% left!
+    count:
+      status: true
+      content: 'Players online right now: %ONLINE%/%MAX%'
+    death:
+      status: true
+      content: 'The Player %PLAYER% died: %MESSAGE%'
+    portalcreation:
+      status: true
+      content: The Player %PLAYER% created a portal at %LOCATION%
     command:
+      disableall: false
       op:
         status: true
         content: The player %PLAYER% executed /op for %TARGET% !
@@ -87,13 +112,6 @@ messages:
       whitelist:
         status: true
         content: 'The player %PLAYER% used a whitelist command: %CONTENT%'
-    join:
-      status: true
-      content: The player %PLAYER% joined!
-    leave:
-      status: true
-      content: The player %PLAYER% left!
-
 ```
 
 

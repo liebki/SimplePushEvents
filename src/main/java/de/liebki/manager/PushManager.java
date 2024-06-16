@@ -19,19 +19,24 @@ public class PushManager {
 		this.plugin = plugin;
 	}
 
+	/**
+	 * To send a certain message to ntfy.sh to be pushed to all subscribers
+	 * 
+	 * @param content The message to push
+	 */
 	public void SendMessage(String content) {
 		HttpClient client = HttpClient.newHttpClient();
 
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("http://ntfy.sh/" + (String) plugin.config.get("donottouch.pushchannel")))
+				.uri(URI.create("http://ntfy.sh/" + plugin.config.get("donottouch.pushchannel")))
 				.POST(BodyPublishers.ofString(content))
-				.setHeader("Title", (String) plugin.config.get("messages.general.title"))
+				.setHeader("Title", plugin.config.get("messages.general.title"))
 				.setHeader("Priority", "urgent").setHeader("Content-Type", "application/x-www-form-urlencoded").build();
 
 		try {
 			client.send(request, HttpResponse.BodyHandlers.ofString());
 		} catch (IOException | InterruptedException e) {
-			Bukkit.getConsoleSender().sendMessage("The message could not be sent using the push service!");
+			Bukkit.getConsoleSender().sendMessage("Error in SendMessage(): \n" + e.getMessage());
 		}
 	}
 }
